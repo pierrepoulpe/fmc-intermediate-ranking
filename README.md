@@ -1,3 +1,5 @@
+[🇬🇧 English](README.en.md) · 🇫🇷 Français
+
 # TCR No12 — classement « distance au prochain CP »
 
 Pendant la Transcontinental Race, le classement officiel ne bouge qu'au **passage d'un point
