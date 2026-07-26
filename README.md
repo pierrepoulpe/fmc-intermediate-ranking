@@ -1,111 +1,108 @@
-[🇬🇧 English](README.en.md) · 🇫🇷 Français
+🇬🇧 English · [🇫🇷 Français](README.fr.md)
 
-# TCR No12 — classement « distance au prochain CP »
+# TCR No12 — "distance to next CP" ranking
 
-Pendant la Transcontinental Race, le classement officiel ne bouge qu'au **passage d'un point
-de contrôle (CP)** — alors qu'il peut y avoir ~2000 km entre deux CP. Cet outil reconstruit un
-**classement continu** basé sur la progression réelle de chaque coureur vers son prochain point.
+During the Transcontinental Race, the official ranking only moves when a rider
+**passes a control point (CP)** — even though there can be ~2000 km between two CPs. This tool
+rebuilds a **continuous ranking** based on each rider's actual progress toward their next point.
 
-Il s'affiche **par-dessus la carte officielle Follow My Challenge**, directement dans ton
-navigateur de téléphone.
+It is displayed **on top of the official Follow My Challenge map**, straight from your
+phone browser.
 
 ---
 
-## 🚀 Guide d'installation pas à pas (pour tout le monde)
+## 🚀 Step-by-step install guide (for everyone)
 
-Il faut 3 briques : un **navigateur qui accepte les extensions** (Firefox), une **extension qui
-sait lancer des petits scripts** (Tampermonkey), et enfin **le script** de classement. Compter ~5 min,
-une seule fois.
+You need 3 building blocks: a **browser that supports extensions** (Firefox), an **extension that
+can run small scripts** (Tampermonkey), and finally **the ranking script** itself. Count on ~5 min,
+one time only.
 
-### 1. Installer Firefox
+### 1. Install Firefox
 
-Le navigateur Chrome par défaut d'Android **ne gère pas les extensions** : impossible d'y faire
-tourner le script. Firefox, si.
+Android's default Chrome browser **does not support extensions**: it can't run the script.
+Firefox can.
 
-1. Ouvre le **Play Store** (Android) ou l'**App Store** (iPhone).
-2. Cherche **« Firefox »** (éditeur *Mozilla*), installe-le, ouvre-le.
+1. Open the **Play Store** (Android) or the **App Store** (iPhone).
+2. Search for **"Firefox"** (publisher *Mozilla*), install it, open it.
 
-### 2. Installer l'extension Tampermonkey
+### 2. Install the Tampermonkey extension
 
-Tampermonkey est un « gestionnaire de userscripts » : c'est lui qui exécutera le classement sur
-la page de la course.
+Tampermonkey is a "userscript manager": it's the one that will run the ranking on the race page.
 
-1. Dans Firefox, touche le menu **⋮** (en bas à droite) → **Modules complémentaires** (ou
-   *Extensions*).
-2. Cherche **« Tampermonkey »**, touche **Ajouter à Firefox**, puis **Autoriser / Ajouter**.
-3. Une petite icône Tampermonkey apparaît dans la barre de Firefox : l'extension est prête.
+1. In Firefox, tap the **⋮** menu (bottom right) → **Add-ons** (or *Extensions*).
+2. Search for **"Tampermonkey"**, tap **Add to Firefox**, then **Allow / Add**.
+3. A small Tampermonkey icon appears in the Firefox bar: the extension is ready.
 
-### 3. Installer le script de classement
+### 3. Install the ranking script
 
-1. Dans Firefox, ouvre ce lien (c'est le script) :
+1. In Firefox, open this link (that's the script):
 
    ```
    https://raw.githubusercontent.com/pierrepoulpe/fmc-intermediate-ranking/main/ranking.user.js
    ```
 
-2. Tampermonkey affiche une page d'installation → touche **Installer** (ou *Mettre à jour* si
-   une version est déjà présente).
+2. Tampermonkey shows an install page → tap **Install** (or *Update* if a version is already present).
 
-### 4. Utiliser
+### 4. Use it
 
-1. Ouvre la carte de la course : `https://www.followmychallenge.com/live/tcrno12/`
-2. Laisse la carte se charger.
-3. Un **bouton rouge 🏁** apparaît en bas à droite → touche-le : le classement s'ouvre.
-4. Tape ton **nom ou ton dossard** dans le champ de recherche : ta ligne se surligne en vert et
-   l'écran défile jusqu'à elle, au fur et à mesure de la frappe.
+1. Open the race map: `https://www.followmychallenge.com/live/tcrno12/`
+2. Let the map load.
+3. A **red 🏁 button** appears at the bottom right → tap it: the ranking opens.
+4. Type your **name or bib number** in the search field: your row highlights in green and the
+   screen scrolls to it, as you type.
 
-Le classement **se rafraîchit tout seul toutes les 20 s** tant que le panneau est ouvert.
+The ranking **refreshes on its own every 20 s** as long as the panel is open.
 
-### Mettre à jour le script plus tard
+### Updating the script later
 
-Rouvre simplement **le lien de l'étape 3** dans Firefox : Tampermonkey proposera *Mettre à jour*.
-Le numéro de `@version` affiché confirme que la nouvelle version est bien prise.
+Just reopen **the link from step 3** in Firefox: Tampermonkey will offer *Update*.
+The displayed `@version` number confirms the new version was picked up.
 
-> ℹ️ **Sur iPhone**, Firefox ne propose pas Tampermonkey de la même façon : il faut passer par
-> l'application **Userscripts** (gratuite, App Store) reliée à Safari, puis y ajouter le même lien.
-> Sur Android, la voie Firefox + Tampermonkey ci-dessus est la plus simple.
-
----
-
-## Comment ça marche (détails techniques)
-
-### Pourquoi un script côté navigateur ?
-
-- Le tracker officiel du TCRNo12 est **Follow My Challenge** (`followmychallenge.com/live/tcrno12/`).
-- Le site est protégé par un mur anti-bot **Cloudflare** (challenge JavaScript) ; DotWatcher.cc
-  (alimenté par FMC) l'est aussi (Vercel). Impossible d'aspirer les données depuis un serveur.
-- En revanche, **ton navigateur** franchit ce challenge normalement. Le calcul tourne donc
-  **dans la page**, là où les données sont déjà chargées (`window.participantMarkers`).
-
-### Les bornes
-
-La TCR est en **itinéraire libre** entre des **parcours obligatoires**. On ne connaît donc pas la
-route exacte de chaque coureur → on raisonne **à vol d'oiseau**. Les points de passage (« bornes »)
-sont : les **4 CP officiels** + le **début et la fin de chaque parcours obligatoire**, extraits de
-`itineraire.toml` et des extrémités des GPX (repo `ultrarouter`). Doublons < 1,5 km fusionnés.
-**18 bornes**, ~3403 km à vol d'oiseau au total.
-
-### La méthode
-
-- Chaque coureur est **projeté** sur la polyligne des bornes (projection équirectangulaire locale)
-  → on en déduit sa **prochaine borne** et sa progression.
-- La **distance affichée est à vol d'oiseau** (haversine) vers la prochaine borne et vers le
-  prochain CP officiel — approximation assumée.
-- **Tri** : d'abord la borne suivante la plus avancée dans la course, puis, à borne égale, le
-  **vol d'oiseau croissant** vers cette borne (le plus proche devant).
-- Les coureurs très éloignés de la ligne théorique (sur un connecteur libre) sont signalés « ≈ » :
-  leur position dans le classement est plus approximative.
+> ℹ️ **On iPhone**, Firefox doesn't offer Tampermonkey the same way: you have to go through the
+> **Userscripts** app (free, App Store) linked to Safari, then add the same link there.
+> On Android, the Firefox + Tampermonkey route above is the simplest.
 
 ---
 
-## Fichiers
+## How it works (technical details)
 
-| Fichier | Rôle |
+### Why a browser-side script?
+
+- The official TCRNo12 tracker is **Follow My Challenge** (`followmychallenge.com/live/tcrno12/`).
+- The site is protected by a **Cloudflare** anti-bot wall (JavaScript challenge); DotWatcher.cc
+  (fed by FMC) is too (Vercel). It's impossible to scrape the data from a server.
+- Your **browser**, however, clears that challenge normally. So the computation runs
+  **inside the page**, where the data is already loaded (`window.participantMarkers`).
+
+### The waypoints
+
+The TCR is **free-routed** between **mandatory parcours**. So we don't know each rider's exact
+route → we reason **as the crow flies**. The waypoints ("bornes") are: the **4 official CPs** +
+the **start and end of each mandatory parcours**, extracted from `itineraire.toml` and the GPX
+endpoints (repo `ultrarouter`). Duplicates < 1.5 km merged. **18 waypoints**, ~3403 km as the
+crow flies in total.
+
+### The method
+
+- Each rider is **projected** onto the waypoint polyline (local equirectangular projection)
+  → this gives their **next waypoint** and their progress.
+- The **displayed distance is as the crow flies** (haversine) to the next waypoint and to the
+  next official CP — an accepted approximation.
+- **Sorting**: first by the furthest next waypoint reached in the race, then, for a tie on the
+  same waypoint, by **increasing straight-line distance** to that waypoint (closest first).
+- Riders far from the theoretical line (on a free connector) are flagged "≈": their position in
+  the ranking is more approximate.
+
+---
+
+## Files
+
+| File | Role |
 |---|---|
-| `ranking.user.js` | **Le classement** (userscript à installer). |
-| `probe.user.js` | Sonde de diagnostic (userscript) — a servi à découvrir la structure des données de FMC. Inutile à l'usage normal. |
-| `probe.js` / `probe.bookmarklet.txt` | Première version de la sonde, en bookmarklet. Historique. |
-| `bornes.generated.txt` | Liste des 18 bornes générée depuis `itineraire.toml` + GPX. |
+| `ranking.user.js` | **The ranking** (userscript to install). |
+| `probe.user.js` | Diagnostic probe (userscript) — used to discover the structure of FMC's data. Not needed for normal use. |
+| `probe.js` / `probe.bookmarklet.txt` | First version of the probe, as a bookmarklet. Historical. |
+| `bornes.generated.txt` | List of the 18 waypoints generated from `itineraire.toml` + GPX. |
 
-> Si le panneau indique moins de 3 coureurs localisés, il affiche un **diagnostic** (bouton 🔧,
-> puis *Copier*) : structure réelle des marqueurs, utile pour corriger la lecture des positions.
+> If the panel shows fewer than 3 located riders, it displays a **diagnostic** (🔧 button,
+> then *Copy*): the actual structure of the markers, useful for fixing how positions are read.
