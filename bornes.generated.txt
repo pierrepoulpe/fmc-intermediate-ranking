@@ -1,0 +1,20 @@
+const BORNES=[
+  {n:"Depart Trondheim",la:63.43014,lo:10.39518,t:"start"},
+  {n:"fin Start Parcours",la:62.57674,lo:11.37700,t:"pend"},
+  {n:"debut Parcours 1a",la:61.31322,lo:8.92118,t:"pstart"},
+  {n:"fin Parcours 1a",la:61.33434,lo:8.80901,t:"pend"},
+  {n:"CP1 Brekke",la:60.85714,lo:7.10532,t:"cp"},
+  {n:"fin Parcours 1b",la:60.60199,lo:7.50312,t:"pend"},
+  {n:"debut Parcours 2a",la:50.07348,lo:17.09031,t:"pstart"},
+  {n:"fin Parcours 2a",la:50.08288,lo:17.23152,t:"pend"},
+  {n:"debut Parcours 2b",la:49.19043,lo:19.43594,t:"pstart"},
+  {n:"fin Parcours 2b",la:48.96395,lo:19.58613,t:"pend"},
+  {n:"CP2 Jasna",la:48.97824,lo:19.59697,t:"cp"},
+  {n:"debut Parcours 3",la:43.84077,lo:18.44834,t:"pstart"},
+  {n:"CP3 Trebevic",la:43.83075,lo:18.47073,t:"cp"},
+  {n:"debut Parcours 4",la:41.97379,lo:20.40310,t:"pstart"},
+  {n:"fin Parcours 4",la:41.68589,lo:20.42493,t:"pend"},
+  {n:"CP4 Jorgo",la:40.15211,lo:20.59901,t:"cp"},
+  {n:"debut Finish Parcours",la:37.64048,lo:21.64536,t:"pstart"},
+  {n:"Arrivee",la:37.02428,lo:22.10307,t:"finish"}
+];
